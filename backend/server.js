@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const logger = require("./middleware/logger");
 
 const app = express();
 
@@ -9,6 +10,8 @@ const mensajesRoutes = require(
 
 app.use(cors());
 app.use(express.json());
+
+app.use(logger);
 
 app.get("/", (req, res) => {
 
