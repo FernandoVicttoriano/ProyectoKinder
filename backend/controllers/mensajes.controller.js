@@ -1,12 +1,45 @@
-const mensajes = require("../data/mensajes");
+const fs = require("fs");
+const path = require("path");
+
+const rutaMensajes = path.join(
+  __dirname,
+  "../data/mensajes.json"
+);
+
+const leerMensajes = () => {
+
+  const datos = fs.readFileSync(
+    rutaMensajes,
+    "utf8"
+  );
+
+  return JSON.parse(datos);
+
+};
+
+const guardarMensajes = (mensajes) => {
+
+  fs.writeFileSync(
+    rutaMensajes,
+    JSON.stringify(
+      mensajes,
+      null,
+      2
+    )
+  );
+
+};
 
 const obtenerMensajes = (req, res) => {
+
+  const mensajes = leerMensajes();
 
   res.json(mensajes);
 
 };
-
 const crearMensaje = (req, res) => {
+
+  const mensajes = leerMensajes();
 
   const { nombre, correo, mensaje } = req.body;
 
@@ -20,6 +53,8 @@ const crearMensaje = (req, res) => {
 
   mensajes.push(nuevoMensaje);
 
+  guardarMensajes(mensajes);
+
   console.log("===== NUEVO MENSAJE =====");
   console.log(nuevoMensaje);
 
@@ -31,6 +66,8 @@ const crearMensaje = (req, res) => {
 };
 
 const eliminarMensaje = (req, res) => {
+
+  const mensajes = leerMensajes();
 
   const id = Number(req.params.id);
 
@@ -47,6 +84,8 @@ const eliminarMensaje = (req, res) => {
   }
 
   mensajes.splice(indice, 1);
+  
+  guardarMensajes(mensajes);
 
   res.json({
     mensaje: "Mensaje eliminado"
