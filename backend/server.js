@@ -1,6 +1,10 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const logger = require("./middleware/logger");
+const errorHandler = require("./middleware/errorHandler");
+const comunicadosRoutes = require("./routes/comunicados.routes");
 
 const app = express();
 
@@ -22,11 +26,15 @@ app.get("/", (req, res) => {
 });
 
 app.use(mensajesRoutes);
+app.use(comunicadosRoutes);
 
-app.listen(3000, () => {
+app.use(errorHandler);
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
 
   console.log(
-    "Servidor ejecutándose en http://localhost:3000"
+    `Servidor ejecutándose en http://localhost:${PORT}`
   );
 
 });

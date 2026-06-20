@@ -31,6 +31,7 @@ const guardarMensajes = (mensajes) => {
 };
 
 const obtenerMensajes = (req, res) => {
+  
 
   const mensajes = leerMensajes();
 

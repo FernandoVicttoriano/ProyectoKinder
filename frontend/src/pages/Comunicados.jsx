@@ -1,39 +1,63 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 function Comunicados() {
+
+  const [comunicados, setComunicados] = useState([]);
+
+  useEffect(() => {
+
+    const cargarComunicados = async () => {
+
+      try {
+
+        const respuesta = await axios.get(
+          "http://localhost:3000/comunicados"
+        );
+
+        setComunicados(respuesta.data);
+
+      } catch (error) {
+
+        console.error(error);
+
+      }
+
+    };
+
+    cargarComunicados();
+
+  }, []);
+
   return (
-    <div>
+    <div className="container">
 
-      <h1>Comunicados</h1>
+      <h1 className="mb-4">
+        Comunicados
+      </h1>
 
-      <div className="card mb-3">
+      {comunicados.length === 0 ? (
+        <p>No hay comunicados.</p>
+      ) : (
+        comunicados.map((comunicado) => (
+          <div
+            key={comunicado.id}
+            className="card mb-3"
+          >
+            <div className="card-body">
 
-        <div className="card-body">
+              <h3>{comunicado.titulo}</h3>
 
-          <h5>We Tripantu</h5>
+              <p>{comunicado.contenido}</p>
 
-          <p>
-            Recordamos enviar vestimenta alusiva a la cultura representada.
-          </p>
-
-        </div>
-
-      </div>
-
-      <div className="card">
-
-        <div className="card-body">
-
-          <h5>Reunión de Apoderados</h5>
-
-          <p>
-            Jueves a las 18:00 horas.
-          </p>
-
-        </div>
-
-      </div>
+            </div>
+          </div>
+        ))
+      )}
 
     </div>
   );
+
 }
 
 export default Comunicados;

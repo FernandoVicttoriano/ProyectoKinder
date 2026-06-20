@@ -9,6 +9,7 @@ import Contacto from "./pages/Contacto";
 import Footer from "./components/Footer";
 import Comunicados from "./pages/Comunicados";
 import AdminMensajes from "./pages/AdminMensajes";
+import AdminComunicados from "./pages/AdminComunicados";
 
 function App() {
   return (
@@ -24,7 +25,8 @@ function App() {
           <Route path="/galeria" element={<Galeria />} />
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/comunicados" element={<Comunicados />} />
-          <Route path="/admin/mensajes" element={<AdminMensajes />}
+          <Route path="/admin/mensajes" element={<AdminMensajes />}/>
+          <Route path="/admin/comunicados" element={<AdminComunicados />}
 />
 
         </Routes>
