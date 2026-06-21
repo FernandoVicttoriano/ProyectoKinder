@@ -4,7 +4,8 @@ const router = express.Router();
 
 const {
   obtenerComunicados,
-  crearComunicado
+  crearComunicado,
+  eliminarComunicado
 } = require(
   "../controllers/comunicados.controller"
 );
@@ -19,4 +20,8 @@ router.post(
   crearComunicado
 );
 
+router.delete(
+  "/comunicados/:id",
+  eliminarComunicado
+);
 module.exports = router;

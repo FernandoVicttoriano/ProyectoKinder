@@ -78,8 +78,50 @@ const crearComunicado = (
   });
 
 };
+const eliminarComunicado = (
+  req,
+  res
+) => {
+
+  const comunicados =
+    leerComunicados();
+
+  const id =
+    Number(req.params.id);
+
+  const indice =
+    comunicados.findIndex(
+      comunicado =>
+        comunicado.id === id
+    );
+
+  if (indice === -1) {
+
+    return res.status(404).json({
+      mensaje:
+        "Comunicado no encontrado"
+    });
+
+  }
+
+  comunicados.splice(
+    indice,
+    1
+  );
+
+  guardarComunicados(
+    comunicados
+  );
+
+  res.json({
+    mensaje:
+      "Comunicado eliminado"
+  });
+
+};
 
 module.exports = {
   obtenerComunicados,
-  crearComunicado
+  crearComunicado,
+  eliminarComunicado
 };
