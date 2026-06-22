@@ -6,6 +6,7 @@ function AdminComunicados() {
   const [titulo, setTitulo] = useState("");
   const [contenido, setContenido] = useState("");
   const [comunicados, setComunicados] = useState([]);
+  const [editandoId, setEditandoId] = useState(null);
 
   const cargarComunicados = async () => {
 
@@ -27,11 +28,6 @@ function AdminComunicados() {
 
   };
 
-  useEffect(() => {
-
-    cargarComunicados();
-
-  }, []);
 
   const crearComunicado = async (e) => {
 
@@ -80,6 +76,65 @@ function AdminComunicados() {
 
   };
 
+  const editarComunicado = (comunicado) => {
+
+    setEditandoId(
+      comunicado.id
+    );
+
+    setTitulo(
+      comunicado.titulo
+    );
+
+    setContenido(
+      comunicado.contenido
+    );
+
+  };
+
+  const guardarCambios = async (e) => {
+
+    e.preventDefault();
+
+    try {
+
+      const respuesta = await axios.put(
+        `http://localhost:3000/comunicados/${editandoId}`,
+        {
+          titulo,
+          contenido
+        }
+      );
+
+      alert(
+        respuesta.data.mensaje
+      );
+
+      setEditandoId(null);
+
+      setTitulo("");
+      setContenido("");
+
+      cargarComunicados();
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
+
+  };
+
+  const cancelarEdicion = () => {
+
+    setEditandoId(null);
+
+    setTitulo("");
+
+    setContenido("");
+
+  };
+
   return (
     <div className="container">
 
@@ -87,7 +142,13 @@ function AdminComunicados() {
         Administrar Comunicados
       </h1>
 
-      <form onSubmit={crearComunicado}>
+      <form
+        onSubmit={
+          editandoId
+            ? guardarCambios
+            : crearComunicado
+        }
+      >
 
         <input
           type="text"
@@ -95,7 +156,9 @@ function AdminComunicados() {
           placeholder="Título"
           value={titulo}
           onChange={(e) =>
-            setTitulo(e.target.value)
+            setTitulo(
+              e.target.value
+            )
           }
         />
 
@@ -105,51 +168,88 @@ function AdminComunicados() {
           placeholder="Contenido"
           value={contenido}
           onChange={(e) =>
-            setContenido(e.target.value)
+            setContenido(
+              e.target.value
+            )
           }
         />
 
         <button
-          className="btn btn-success mb-4"
+          className="btn btn-success"
         >
-          Crear Comunicado
+          {
+            editandoId
+              ? "Guardar Cambios"
+              : "Crear Comunicado"
+          }
         </button>
+
+        {
+          editandoId && (
+            <button
+              type="button"
+              className="btn btn-secondary ms-2"
+              onClick={
+                cancelarEdicion
+              }
+            >
+              Cancelar
+            </button>
+          )
+        }
 
       </form>
 
-      <h2>Comunicados Existentes</h2>
+      <hr />
 
-      {comunicados.map(
-        (comunicado) => (
-          <div
-            key={comunicado.id}
-            className="card mb-3"
-          >
-            <div className="card-body">
+      <h2>
+        Comunicados Existentes
+      </h2>
 
-              <h5>
-                {comunicado.titulo}
-              </h5>
+      {
+        comunicados.map(
+          (comunicado) => (
+            <div
+              key={comunicado.id}
+              className="card mb-3"
+            >
+              <div className="card-body">
 
-              <p>
-                {comunicado.contenido}
-              </p>
+                <h5>
+                  {comunicado.titulo}
+                </h5>
 
-              <button
-                className="btn btn-danger"
-                onClick={() =>
-                  eliminarComunicado(
-                    comunicado.id
-                  )
-                }
-              >
-                Eliminar
-              </button>
+                <p>
+                  {comunicado.contenido}
+                </p>
 
+                <button
+                  className="btn btn-warning"
+                  onClick={() =>
+                    editarComunicado(
+                      comunicado
+                    )
+                  }
+                >
+                  Editar
+                </button>
+
+                <button
+                  className="btn btn-danger ms-2"
+                  onClick={() =>
+                    eliminarComunicado(
+                      comunicado.id
+                    )
+                  }
+                >
+                  Eliminar
+                </button>
+
+              </div>
             </div>
-          </div>
+          )
         )
-      )}
+      }
 
     </div>
   );

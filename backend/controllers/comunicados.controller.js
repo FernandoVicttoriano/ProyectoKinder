@@ -119,9 +119,56 @@ const eliminarComunicado = (
   });
 
 };
+const actualizarComunicado = (
+  req,
+  res
+) => {
+
+  const comunicados =
+    leerComunicados();
+
+  const id =
+    Number(req.params.id);
+
+  const {
+    titulo,
+    contenido
+  } = req.body;
+
+  const comunicado =
+    comunicados.find(
+      c => c.id === id
+    );
+
+  if (!comunicado) {
+
+    return res.status(404).json({
+      mensaje:
+        "Comunicado no encontrado"
+    });
+
+  }
+
+  comunicado.titulo =
+    titulo;
+
+  comunicado.contenido =
+    contenido;
+
+  guardarComunicados(
+    comunicados
+  );
+
+  res.json({
+    mensaje:
+      "Comunicado actualizado"
+  });
+
+};
 
 module.exports = {
   obtenerComunicados,
   crearComunicado,
-  eliminarComunicado
+  eliminarComunicado,
+  actualizarComunicado
 };

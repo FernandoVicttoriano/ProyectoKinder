@@ -1,11 +1,13 @@
 const express = require("express");
 
+
 const router = express.Router();
 
 const {
   obtenerComunicados,
   crearComunicado,
-  eliminarComunicado
+  eliminarComunicado,
+  actualizarComunicado
 } = require(
   "../controllers/comunicados.controller"
 );
@@ -23,5 +25,10 @@ router.post(
 router.delete(
   "/comunicados/:id",
   eliminarComunicado
+);
+
+router.put(
+  "/comunicados/:id",
+  actualizarComunicado
 );
 module.exports = router;
