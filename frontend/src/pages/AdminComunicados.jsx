@@ -8,47 +8,43 @@ function AdminComunicados() {
   const [comunicados, setComunicados] = useState([]);
   const [editandoId, setEditandoId] = useState(null);
 
+  const API_URL = "http://localhost:3000/comunicados";
+  const ADMIN_KEY = "kinder2026_super_secreta";
+
+  // 🔄 Cargar comunicados
   const cargarComunicados = async () => {
 
     try {
 
-      const respuesta = await axios.get(
-        "http://localhost:3000/comunicados"
-      );
-
-      setComunicados(
-        respuesta.data
-      );
+      const respuesta = await axios.get(API_URL);
+      setComunicados(respuesta.data);
 
     } catch (error) {
-
       console.error(error);
-
     }
 
   };
 
   useEffect(() => {
-
     cargarComunicados();
-
   }, []);
 
+  // ➕ Crear comunicado
   const crearComunicado = async (e) => {
 
     e.preventDefault();
 
     try {
 
-      const respuesta = await axios.post(
-        "http://localhost:3000/comunicados",
+      await axios.post(
+        API_URL,
+        { titulo, contenido },
         {
-          titulo,
-          contenido
+          headers: {
+            "x-admin-key": ADMIN_KEY
+          }
         }
       );
-
-      alert(respuesta.data.mensaje);
 
       setTitulo("");
       setContenido("");
@@ -56,87 +52,71 @@ function AdminComunicados() {
       cargarComunicados();
 
     } catch (error) {
-
       console.error(error);
-
     }
 
   };
 
+  // 🗑️ Eliminar comunicado
   const eliminarComunicado = async (id) => {
 
     try {
 
       await axios.delete(
-        `http://localhost:3000/comunicados/${id}`
+        `${API_URL}/${id}`,
+        {
+          headers: {
+            "x-admin-key": ADMIN_KEY
+          }
+        }
       );
 
       cargarComunicados();
 
     } catch (error) {
-
       console.error(error);
-
     }
 
   };
 
+  // ✏️ Activar edición (solo llena formulario)
   const editarComunicado = (comunicado) => {
 
-    setEditandoId(
-      comunicado.id
-    );
-
-    setTitulo(
-      comunicado.titulo
-    );
-
-    setContenido(
-      comunicado.contenido
-    );
+    setEditandoId(comunicado.id);
+    setTitulo(comunicado.titulo);
+    setContenido(comunicado.contenido);
 
   };
 
-  const guardarCambios = async (e) => {
+  // 💾 Guardar edición
+  const guardarEdicion = async (e) => {
 
     e.preventDefault();
 
     try {
 
-      const respuesta = await axios.put(
-        `http://localhost:3000/comunicados/${editandoId}`,
+      await axios.put(
+        `${API_URL}/${editandoId}`,
         {
           titulo,
           contenido
+        },
+        {
+          headers: {
+            "x-admin-key": ADMIN_KEY
+          }
         }
       );
 
-      alert(
-        respuesta.data.mensaje
-      );
-
-      setEditandoId(null);
-
       setTitulo("");
       setContenido("");
+      setEditandoId(null);
 
       cargarComunicados();
 
     } catch (error) {
-
       console.error(error);
-
     }
-
-  };
-
-  const cancelarEdicion = () => {
-
-    setEditandoId(null);
-
-    setTitulo("");
-
-    setContenido("");
 
   };
 
@@ -147,24 +127,15 @@ function AdminComunicados() {
         Administrar Comunicados
       </h1>
 
-      <form
-        onSubmit={
-          editandoId
-            ? guardarCambios
-            : crearComunicado
-        }
-      >
+      {/* FORMULARIO */}
+      <form onSubmit={editandoId ? guardarEdicion : crearComunicado}>
 
         <input
           type="text"
           className="form-control mb-3"
           placeholder="Título"
           value={titulo}
-          onChange={(e) =>
-            setTitulo(
-              e.target.value
-            )
-          }
+          onChange={(e) => setTitulo(e.target.value)}
         />
 
         <textarea
@@ -172,89 +143,44 @@ function AdminComunicados() {
           rows="5"
           placeholder="Contenido"
           value={contenido}
-          onChange={(e) =>
-            setContenido(
-              e.target.value
-            )
-          }
+          onChange={(e) => setContenido(e.target.value)}
         />
 
-        <button
-          className="btn btn-success"
-        >
-          {
-            editandoId
-              ? "Guardar Cambios"
-              : "Crear Comunicado"
-          }
+        <button className="btn btn-success mb-4">
+          {editandoId ? "Actualizar Comunicado" : "Crear Comunicado"}
         </button>
-
-        {
-          editandoId && (
-            <button
-              type="button"
-              className="btn btn-secondary ms-2"
-              onClick={
-                cancelarEdicion
-              }
-            >
-              Cancelar
-            </button>
-          )
-        }
 
       </form>
 
-      <hr />
+      {/* LISTA */}
+      <h2>Comunicados Existentes</h2>
 
-      <h2>
-        Comunicados Existentes
-      </h2>
+      {comunicados.map((comunicado) => (
+        <div key={comunicado.id} className="card mb-3">
 
-      {
-        comunicados.map(
-          (comunicado) => (
-            <div
-              key={comunicado.id}
-              className="card mb-3"
+          <div className="card-body">
+
+            <h5>{comunicado.titulo}</h5>
+            <p>{comunicado.contenido}</p>
+
+            <button
+              className="btn btn-primary me-2"
+              onClick={() => editarComunicado(comunicado)}
             >
-              <div className="card-body">
+              Editar
+            </button>
 
-                <h5>
-                  {comunicado.titulo}
-                </h5>
+            <button
+              className="btn btn-danger"
+              onClick={() => eliminarComunicado(comunicado.id)}
+            >
+              Eliminar
+            </button>
 
-                <p>
-                  {comunicado.contenido}
-                </p>
+          </div>
 
-                <button
-                  className="btn btn-warning"
-                  onClick={() =>
-                    editarComunicado(
-                      comunicado
-                    )
-                  }
-                >
-                  Editar
-                </button>
-
-                <button
-                  className="btn btn-danger ms-2"
-                  onClick={() =>
-                    eliminarComunicado(
-                      comunicado.id
-                    )
-                  }
-                >
-                  Eliminar
-                </button>
-
-              </div>
-            </div>
-          )
-        )
-      }
+        </div>
+      ))}
 
     </div>
   );

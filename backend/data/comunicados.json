@@ -1,11 +1,5 @@
 [
   {
-    "id": 1781915639908,
-    "titulo": "Trabajo de ciencias sociales",
-    "contenido": "los niños deberán traer materiales los cuales están escritos en el cuaderno para mañana\n",
-    "fecha": "2026-06-20T00:33:59.908Z"
-  },
-  {
     "id": 1781916653132,
     "titulo": "reunión de apoderados",
     "contenido": "Jueves 14 de octubre ",
@@ -14,43 +8,13 @@
   {
     "id": 1782172835777,
     "titulo": "trabajo terminado ",
-    "contenido": "traer por favor el trabajo terminado ",
+    "contenido": "traer por favor el trabajo terminado please",
     "fecha": "2026-06-23T00:00:35.777Z"
   },
   {
-    "id": 1782255801294,
-    "titulo": "Prueba",
-    "contenido": "Probando seguridad",
-    "fecha": "2026-06-23T23:03:21.294Z"
-  },
-  {
-    "id": 1782255941436,
-    "titulo": "Prueba",
-    "contenido": "Probando seguridad",
-    "fecha": "2026-06-23T23:05:41.436Z"
-  },
-  {
-    "id": 1782256092354,
-    "titulo": "Prueba",
-    "contenido": "Probando seguridad",
-    "fecha": "2026-06-23T23:08:12.354Z"
-  },
-  {
-    "id": 1782256109202,
-    "titulo": "Prueba",
-    "contenido": "Probando seguridad",
-    "fecha": "2026-06-23T23:08:29.202Z"
-  },
-  {
-    "id": 1782256136792,
-    "titulo": "Prueba",
-    "contenido": "Probando seguridad",
-    "fecha": "2026-06-23T23:08:56.792Z"
-  },
-  {
-    "id": 1782256220074,
-    "titulo": "Prueba seguridad",
-    "contenido": "Sin header",
-    "fecha": "2026-06-23T23:10:20.074Z"
+    "id": 1782257174429,
+    "titulo": "fernando",
+    "contenido": "hola hola",
+    "fecha": "2026-06-23T23:26:14.429Z"
   }
 ]
