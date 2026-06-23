@@ -28,6 +28,11 @@ function AdminComunicados() {
 
   };
 
+  useEffect(() => {
+
+    cargarComunicados();
+
+  }, []);
 
   const crearComunicado = async (e) => {
 

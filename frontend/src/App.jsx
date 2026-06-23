@@ -10,6 +10,8 @@ import Footer from "./components/Footer";
 import Comunicados from "./pages/Comunicados";
 import AdminMensajes from "./pages/AdminMensajes";
 import AdminComunicados from "./pages/AdminComunicados";
+import Login from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -25,9 +27,11 @@ function App() {
           <Route path="/galeria" element={<Galeria />} />
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/comunicados" element={<Comunicados />} />
-          <Route path="/admin/mensajes" element={<AdminMensajes />}/>
-          <Route path="/admin/comunicados" element={<AdminComunicados />}
-/>
+          <Route path="/admin/mensajes" element={<ProtectedRoute><AdminMensajes /></ProtectedRoute>}/>
+          <Route path="/admin/comunicados" element={<ProtectedRoute><AdminComunicados /></ProtectedRoute>}/>
+          <Route path="/login" element={<Login />} />
+          
+
 
         </Routes>
 

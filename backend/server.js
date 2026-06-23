@@ -5,6 +5,7 @@ const cors = require("cors");
 const logger = require("./middleware/logger");
 const errorHandler = require("./middleware/errorHandler");
 const comunicadosRoutes = require("./routes/comunicados.routes");
+const authRoutes = require("./routes/auth.routes");
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.get("/", (req, res) => {
 
 app.use(mensajesRoutes);
 app.use(comunicadosRoutes);
+app.use(authRoutes);
 
 app.use(errorHandler);
 const PORT = process.env.PORT || 3000;
